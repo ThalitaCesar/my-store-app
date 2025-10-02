@@ -84,12 +84,10 @@ yarn install
 ### 3. Configurar o Firebase
 
 * Crie um projeto no [Firebase Console](https://console.firebase.google.com/).
+* Crie um arquivo firebaseConfig.ts com as variáveis do projeto.
 * Ative **Authentication (Email/Password)** e **Firestore Database**.
-* Baixe o arquivo de configuração:
-
-  * `google-services.json` (Android)
-  * `GoogleService-Info.plist` (iOS)
-* Adicione o arquivo à pasta correta do Expo.
+* Ative o Firestore Database → Configure o banco de dados no modo adequado (padrão: teste para desenvolvimento).
+* E ative Cloud Messaging → Ative para possibilitar push notifications.
 
 ### 4. Rodar o projeto
 
