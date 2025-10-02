@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, View, Text } from 'react-native';
 import { Card, Button } from 'react-native-paper';
 import { useFavorites } from '../../context/FavoritesContext';
@@ -7,9 +7,9 @@ import { globalStyles as styles } from '../../styles/styles';
 
 export default function FavoritesScreen() {
   const { favorites, removeFromFavorites } = useFavorites();
-  const [products, setProducts] = React.useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const loadProducts = async () => {
       const allProducts = await getProducts();
       setProducts(allProducts.filter(p => favorites.includes(p.id)));
@@ -38,7 +38,7 @@ export default function FavoritesScreen() {
         data={products}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
-        contentContainerStyle={styles.container}
+        contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 16 }}
         ListEmptyComponent={<Text style={styles.emptyText}>Nenhum favorito ainda.</Text>}
       />
     </View>

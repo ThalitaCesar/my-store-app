@@ -1,11 +1,15 @@
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 export const globalStyles = EStyleSheet.create({
+container: {
+  flex: 1,
+  backgroundColor: '$background',
+  padding: '$spacingMd',
+},
 card: {
   marginBottom: '$spacingMd',
   backgroundColor: '$surface',
   borderRadius: '$radiiMd', 
-   marginHorizontal: '$spacingMd',
 },
 cardImageWrapper: {
   overflow: 'hidden',
@@ -34,5 +38,11 @@ price: {
 },
 button: {
   borderRadius: '$radiiSm',
+},
+emptyText: {
+  textAlign: 'center',
+  marginTop: '$spacingLg',
+  fontSize: 16,
+  color: '$text',
 },
 });

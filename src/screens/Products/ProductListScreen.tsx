@@ -56,7 +56,7 @@ export default function ProductListScreen() {
         data={products}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
-        contentContainerStyle={styles.container}
+        contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 16 }}
         ListEmptyComponent={<Text style={styles.emptyText}>Nenhum produto encontrado.</Text>}
       />
     </View>
