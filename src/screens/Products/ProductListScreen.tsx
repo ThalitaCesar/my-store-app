@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, View, Text } from 'react-native';
 import { Card, Button } from 'react-native-paper';
 import { getProducts } from '../../services/productService';
-import { useFavorites } from '../../context/FavoritesContext';
+import { useFavorites } from '../../contexts/FavoritesContext';
 import { globalStyles as styles } from '../../styles/styles';
 
 export default function ProductListScreen() {

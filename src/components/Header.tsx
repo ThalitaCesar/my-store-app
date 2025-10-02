@@ -5,15 +5,18 @@ import { IconButton, Menu, Avatar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { auth } from '../config/firebaseConfig';
 import { RootStackParamList } from '../navigation/MainNavigator';
+import { useAuth } from "../contexts/AuthContext";
+
 
 type AppHeaderProps = {
   appName: string;
   appIcon?: string;
+  showMenu?: boolean;
 };
 
-export default function AppHeader({ appName, appIcon = 'storefront' }: AppHeaderProps) {
+export default function AppHeader({ appName, appIcon = 'storefront', showMenu = true }: AppHeaderProps) {
+  const { logOut } = useAuth();
   const [menuVisible, setMenuVisible] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
@@ -22,32 +25,39 @@ export default function AppHeader({ appName, appIcon = 'storefront' }: AppHeader
 
   const handleLogout = async () => {
     closeMenu();
-    await auth.signOut();
-    navigation.replace('Login');
+    await logOut();
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        !showMenu && { justifyContent: 'center' } 
+      ]}
+    >
       <View style={styles.leftContainer}>
         <MaterialIcons name={appIcon} size={36} color="#6200ee" />
         <Text style={styles.appName}>{appName}</Text>
       </View>
 
-      <Menu
-        visible={menuVisible}
-        onDismiss={closeMenu}
-        anchor={
-          <IconButton
-            icon={() => <Avatar.Text size={30} label="U" />}
-            onPress={openMenu}
-          />
-        }
-      >
-        <Menu.Item onPress={handleLogout} title="Sair" />
-      </Menu>
+      {showMenu && (
+        <Menu
+          visible={menuVisible}
+          onDismiss={closeMenu}
+          anchor={
+            <IconButton
+              icon={() => <Avatar.Text size={30} label="U" />}
+              onPress={openMenu}
+            />
+          }
+        >
+          <Menu.Item onPress={handleLogout} title="Sair" />
+        </Menu>
+      )}
     </View>
   );
 }
+
 
 const styles = EStyleSheet.create({
   container: {

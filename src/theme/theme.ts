@@ -9,6 +9,7 @@ export const buildTheme = () => {
     $text: '#000000',
     $muted: '#6b6b6b',
     $error: '#B00020',
+    $border: '#CCCCCC',
 
     $spacingXs: 4,
     $spacingSm: 8,

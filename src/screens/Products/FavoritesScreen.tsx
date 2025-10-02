@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, View, Text } from 'react-native';
 import { Card, Button } from 'react-native-paper';
-import { useFavorites } from '../../context/FavoritesContext';
+import { useFavorites } from '../../contexts/FavoritesContext';
 import { getProducts } from '../../services/productService';
 import { globalStyles as styles } from '../../styles/styles';
 

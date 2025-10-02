@@ -26,10 +26,11 @@ cardContent: {
   paddingHorizontal: '$spacingSm',
 },
 title: {
-  fontSize: 18,
+  fontSize: 20,
   fontWeight: 'bold',
   marginBottom: '$spacingSm',
   color: '$text',
+  textAlign: 'center',
 },
 price: {
   fontSize: 18,
@@ -45,4 +46,19 @@ emptyText: {
   fontSize: 16,
   color: '$text',
 },
+linkContainer: {
+  marginTop: '$spacingLg',
+  alignItems: 'center',
+},
+linkText: {
+  fontSize: 16,
+  textAlign: 'center',
+  color: '$text', 
+},
+link: {
+  fontSize: 16,
+  color: '$primary',
+  textAlign: 'center',
+},
+
 });
