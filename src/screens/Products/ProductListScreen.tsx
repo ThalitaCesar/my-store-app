@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
-import { Card, Text, Button } from 'react-native-paper';
+import { FlatList, View, Text } from 'react-native';
+import { Card, Button } from 'react-native-paper';
 import { getProducts } from '../../services/productService';
-import { addFavorite, removeFavorite, getUserFavorites } from '../../services/favoriteService';
-import { auth } from '../../config/firebaseConfig';
+import { useFavorites } from '../../context/FavoritesContext';
+import { globalStyles as styles } from '../../styles/styles';
 
 export default function ProductListScreen() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [favorites, setFavorites] = useState<number[]>([]);
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
 
   useEffect(() => {
     fetchProducts();
-    fetchFavorites();
   }, []);
 
   const fetchProducts = async () => {
@@ -26,42 +25,40 @@ export default function ProductListScreen() {
     }
   };
 
-  const fetchFavorites = async () => {
-    const favs = await getUserFavorites(auth.currentUser!.uid);
-    setFavorites(favs);
-  };
-
   const toggleFavorite = async (productId: number) => {
     if (favorites.includes(productId)) {
-      await removeFavorite(auth.currentUser!.uid, productId);
-      setFavorites(favorites.filter((id) => id !== productId));
+      await removeFromFavorites(productId);
     } else {
-      await addFavorite(auth.currentUser!.uid, productId);
-      setFavorites([...favorites, productId]);
+      await addToFavorites(productId);
     }
   };
 
   const renderItem = ({ item }: any) => (
     <Card style={styles.card}>
-      <Card.Cover source={{ uri: item.image }} />
-      <Card.Content>
-        <Text variant="titleMedium">{item.title}</Text>
-        <Text>${item.price}</Text>
+      <Card.Cover source={{ uri: item.image }} style={styles.cardImage} />
+      <Card.Content style={styles.cardContent}>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.price}>${item.price}</Text>
       </Card.Content>
       <Card.Actions>
-        <Button onPress={() => toggleFavorite(item.id)}>
+        <Button mode="contained" onPress={() => toggleFavorite(item.id)} style={styles.button}>
           {favorites.includes(item.id) ? 'Remover dos Favoritos' : 'Favoritar'}
         </Button>
       </Card.Actions>
     </Card>
   );
 
-  if (loading) return <Text>Carregando produtos...</Text>;
+  if (loading) return <Text style={styles.emptyText}>Carregando produtos...</Text>;
 
-  return <FlatList data={products} keyExtractor={(item) => item.id.toString()} renderItem={renderItem} contentContainerStyle={styles.list} />;
+  return (
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <FlatList
+        data={products}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        contentContainerStyle={styles.container}
+        ListEmptyComponent={<Text style={styles.emptyText}>Nenhum produto encontrado.</Text>}
+      />
+    </View>
+  );
 }
-
-const styles = StyleSheet.create({
-  list: { padding: 16 },
-  card: { marginBottom: 12 },
-});
