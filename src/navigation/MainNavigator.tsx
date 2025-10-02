@@ -1,10 +1,10 @@
-import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useAuth } from "../contexts/AuthContext";
-import LoginScreen from "../screens/Auth/LoginScreen";
-import SignUpScreen from "../screens/Auth/SignUpScreen";
-import AppTabs from "./AppTabs";
-import AppHeader from "../components/Header";
+import React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useAuth } from '../contexts/AuthContext';
+import LoginScreen from '../screens/Auth/LoginScreen';
+import SignUpScreen from '../screens/Auth/SignUpScreen';
+import AppTabs from './AppTabs';
+import AppHeader from '../components/Header';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -17,9 +17,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function MainNavigator() {
   const { user, loading } = useAuth();
 
-  if (loading) {
-    return null;
-  }
+  if (loading) return null;
 
   return (
     <Stack.Navigator>
@@ -33,7 +31,7 @@ export default function MainNavigator() {
         />
       ) : (
         <>
-         <Stack.Screen
+          <Stack.Screen
             name="Login"
             component={LoginScreen}
             options={{

@@ -1,4 +1,4 @@
-import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore";
+import { collection, doc, setDoc, deleteDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
 
 export async function addFavorite(userId: string, productId: number) {
@@ -11,13 +11,14 @@ export async function removeFavorite(userId: string, productId: number) {
   await deleteDoc(ref);
 }
 
-export async function getUserFavorites(userId: string) {
+export async function getUserFavorites(userId: string): Promise<number[]> {
   const favCol = collection(db, "favorites");
-  const snapshot = await getDocs(favCol);
+  const q = query(favCol, where("userId", "==", userId));
+  const snapshot = await getDocs(q);
   const favs: number[] = [];
   snapshot.forEach((doc) => {
     const data = doc.data();
-    if (data.userId === userId) favs.push(data.productId);
+    favs.push(data.productId);
   });
   return favs;
 }

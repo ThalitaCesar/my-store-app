@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, View, Text } from 'react-native';
-import { Card, Button } from 'react-native-paper';
 import { getProducts } from '../../services/productService';
 import { useFavorites } from '../../contexts/FavoritesContext';
 import { globalStyles as styles } from '../../styles/styles';
+import ProductCard from '../../components/ProductCard';
+import { Product } from '../../types/Products';
 
 export default function ProductListScreen() {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
 
@@ -33,25 +34,18 @@ export default function ProductListScreen() {
     }
   };
 
-  const renderItem = ({ item }: any) => (
-    <Card style={styles.card}>
-      <Card.Cover source={{ uri: item.image }} style={styles.cardImage} />
-      <Card.Content style={styles.cardContent}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.price}>${item.price}</Text>
-      </Card.Content>
-      <Card.Actions>
-        <Button mode="contained" onPress={() => toggleFavorite(item.id)} style={styles.button}>
-          {favorites.includes(item.id) ? 'Remover dos Favoritos' : 'Favoritar'}
-        </Button>
-      </Card.Actions>
-    </Card>
+  const renderItem = ({ item }: { item: Product }) => (
+    <ProductCard
+      product={item}
+      buttonLabel={favorites.includes(item.id) ? 'Remover dos Favoritos' : 'Favoritar'}
+      onButtonPress={() => toggleFavorite(item.id)}
+    />
   );
 
   if (loading) return <Text style={styles.emptyText}>Carregando produtos...</Text>;
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={styles.container}>
       <FlatList
         data={products}
         keyExtractor={(item) => item.id.toString()}

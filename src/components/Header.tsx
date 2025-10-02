@@ -6,8 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { RootStackParamList } from '../navigation/MainNavigator';
-import { useAuth } from "../contexts/AuthContext";
-
+import { useAuth } from '../contexts/AuthContext';
 
 type AppHeaderProps = {
   appName: string;
@@ -29,17 +28,11 @@ export default function AppHeader({ appName, appIcon = 'storefront', showMenu = 
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        !showMenu && { justifyContent: 'center' } 
-      ]}
-    >
+    <View style={[styles.container, !showMenu && { justifyContent: 'center' }]}>
       <View style={styles.leftContainer}>
         <MaterialIcons name={appIcon} size={36} color="#6200ee" />
         <Text style={styles.appName}>{appName}</Text>
       </View>
-
       {showMenu && (
         <Menu
           visible={menuVisible}
@@ -57,7 +50,6 @@ export default function AppHeader({ appName, appIcon = 'storefront', showMenu = 
     </View>
   );
 }
-
 
 const styles = EStyleSheet.create({
   container: {

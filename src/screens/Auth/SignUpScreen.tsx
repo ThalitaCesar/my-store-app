@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { useAuth } from "../../contexts/AuthContext";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -10,31 +10,30 @@ import { globalStyles } from "../../styles/styles";
 type SignUpScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "SignUp">;
 
 export default function SignUpScreen() {
-  const { signUp } = useAuth();
+  const { signUp, logOut } = useAuth();
   const navigation = useNavigation<SignUpScreenNavigationProp>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSignUp = async () => {
-    try {
-      setLoading(true);
-      setError("");
-      await signUp(email, password);
-      navigation.replace("Login");
-    } catch (err: any) {
-      setError(err.message || "Erro ao criar conta.");
-    } finally {
-      setLoading(false);
-    }
-  };
+const handleSignUp = async () => {
+  setLoading(true);
+  setError("");
+  try {
+    await signUp(email, password);
+    await logOut(); 
+    navigation.replace("Login");
+  } catch (err: any) {
+    setError(err.message || "Erro ao criar conta.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.title}>Criar Conta</Text>
-
-      {error ? <Text style={globalStyles.error}>{error}</Text> : null}
 
       <TextInput
         label="Email"
@@ -59,10 +58,14 @@ export default function SignUpScreen() {
         mode="contained"
         onPress={handleSignUp}
         loading={loading}
-        style={[globalStyles.button, { marginTop: 10 }]} 
+        style={[globalStyles.button, { marginTop: 10 }]}
       >
         Cadastrar
       </Button>
+
+      {error ? (
+        <Text style={{ color: 'red', textAlign: 'center', marginTop: 8 }}>{error}</Text>
+      ) : null}
 
       <View style={globalStyles.linkContainer}>
         <Text style={globalStyles.linkText}>

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View, Text } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { useAuth } from "../../contexts/AuthContext";
 import { globalStyles } from "../../styles/styles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../navigation/MainNavigator";
 import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../../navigation/MainNavigator";
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "Login">;
 
@@ -18,12 +18,12 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
+    setLoading(true);
+    setError("");
     try {
-      setLoading(true);
-      setError("");
       await signIn(email, password);
-    } catch (err: any) {
-      setError(err.message || "Erro ao fazer login.");
+    } catch {
+      setError("Email ou senha incorretos. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -32,8 +32,6 @@ export default function LoginScreen() {
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.title}>Login</Text>
-
-      {error ? <Text style={globalStyles.error}>{error}</Text> : null}
 
       <TextInput
         label="Email"
@@ -58,10 +56,14 @@ export default function LoginScreen() {
         mode="contained"
         onPress={handleLogin}
         loading={loading}
-        style={[globalStyles.button, { marginTop: 10 }]} 
+        style={[globalStyles.button, { marginTop: 10 }]}
       >
         Entrar
       </Button>
+
+      {error ? (
+        <Text style={{ color: 'red', textAlign: 'center', marginTop: 8 }}>{error}</Text>
+      ) : null}
 
       <View style={globalStyles.linkContainer}>
         <Text style={globalStyles.linkText}>
@@ -74,7 +76,6 @@ export default function LoginScreen() {
           </Text>
         </Text>
       </View>
-
     </View>
   );
 }

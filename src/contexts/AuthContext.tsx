@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged, User, UserCredential } from "firebase/auth";
-import { auth } from "../config/firebaseConfig";
-import * as authService from "../services/authService";
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { onAuthStateChanged, User, UserCredential } from 'firebase/auth';
+import { auth } from '../config/firebaseConfig';
+import * as authService from '../services/authService';
 
 type AuthContextType = {
   user: User | null;
@@ -18,10 +18,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!auth) {
-      console.error("Firebase auth não está inicializado!");
-      return;
-    }
     const unsubscribe = onAuthStateChanged(auth, currentUser => {
       setUser(currentUser);
       setLoading(false);

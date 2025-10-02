@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { auth } from '../config/firebaseConfig';
+import { useAuth } from './AuthContext';
 import { getUserFavorites, addFavorite, removeFavorite } from '../services/favoriteService';
 
 type FavoritesContextType = {
@@ -17,29 +17,33 @@ const FavoritesContext = createContext<FavoritesContextType>({
 });
 
 export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
   const [favorites, setFavorites] = useState<number[]>([]);
 
   const refreshFavorites = async () => {
-    if (!auth.currentUser) return;
-    const favs = await getUserFavorites(auth.currentUser.uid);
+    if (!user) {
+      setFavorites([]);
+      return;
+    }
+    const favs = await getUserFavorites(user.uid);
     setFavorites(favs);
   };
 
   const addToFavorites = async (productId: number) => {
-    if (!auth.currentUser) return;
-    await addFavorite(auth.currentUser.uid, productId);
+    if (!user) return;
+    await addFavorite(user.uid, productId);
     setFavorites(prev => [...prev, productId]);
   };
 
   const removeFromFavorites = async (productId: number) => {
-    if (!auth.currentUser) return;
-    await removeFavorite(auth.currentUser.uid, productId);
+    if (!user) return;
+    await removeFavorite(user.uid, productId);
     setFavorites(prev => prev.filter(id => id !== productId));
   };
 
   useEffect(() => {
     refreshFavorites();
-  }, []);
+  }, [user]);
 
   return (
     <FavoritesContext.Provider value={{ favorites, addToFavorites, removeFromFavorites, refreshFavorites }}>

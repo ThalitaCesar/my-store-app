@@ -25,6 +25,12 @@ cardContent: {
   paddingVertical: '$spacingMd',
   paddingHorizontal: '$spacingSm',
 },
+titleCard: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  marginBottom: '$spacingSm',
+  color: '$text',
+},
 title: {
   fontSize: 20,
   fontWeight: 'bold',

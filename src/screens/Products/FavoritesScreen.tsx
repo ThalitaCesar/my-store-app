@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, View, Text } from 'react-native';
-import { Card, Button } from 'react-native-paper';
-import { useFavorites } from '../../contexts/FavoritesContext';
 import { getProducts } from '../../services/productService';
+import { useFavorites } from '../../contexts/FavoritesContext';
 import { globalStyles as styles } from '../../styles/styles';
+import ProductCard from '../../components/ProductCard';
+import { Product } from '../../types/Products';
 
 export default function FavoritesScreen() {
   const { favorites, removeFromFavorites } = useFavorites();
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -17,23 +18,16 @@ export default function FavoritesScreen() {
     loadProducts();
   }, [favorites]);
 
-  const renderItem = ({ item }: any) => (
-    <Card style={styles.card}>
-      <Card.Cover source={{ uri: item.image }} style={styles.cardImage} />
-      <Card.Content style={styles.cardContent}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.price}>${item.price}</Text>
-      </Card.Content>
-      <Card.Actions>
-        <Button mode="contained" onPress={() => removeFromFavorites(item.id)} style={styles.button}>
-          Remover dos Favoritos
-        </Button>
-      </Card.Actions>
-    </Card>
+  const renderItem = ({ item }: { item: Product }) => (
+    <ProductCard
+      product={item}
+      buttonLabel="Remover dos Favoritos"
+      onButtonPress={() => removeFromFavorites(item.id)}
+    />
   );
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={styles.container}>
       <FlatList
         data={products}
         keyExtractor={(item) => item.id.toString()}

@@ -7,7 +7,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import MainNavigator from './src/navigation/MainNavigator';
 import { buildTheme } from './src/theme/theme';
 import { FavoritesProvider } from './src/contexts/FavoritesContext';
-import { AuthProvider } from './src/contexts/AuthContext'; 
+import { AuthProvider } from './src/contexts/AuthContext';
 
 const queryClient = new QueryClient();
 
@@ -18,7 +18,7 @@ export default function App() {
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
         <PaperProvider>
-          <AuthProvider> 
+          <AuthProvider>
             <FavoritesProvider>
               <NavigationContainer>
                 <MainNavigator />
