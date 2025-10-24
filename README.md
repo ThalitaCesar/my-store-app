@@ -1,6 +1,6 @@
 # My Store App
 
-Aplicativo mobile desenvolvido em **React Native (Expo + TypeScript)** como parte do **Desafio Técnico – Desenvolvedor(a) React Native com Firebase**.
+Aplicativo mobile desenvolvido em **React Native (Expo + TypeScript)**.
 
 O app consome a [Fake Store API](https://fakestoreapi.com/products) para exibir produtos e utiliza **Firebase** para autenticação e persistência de favoritos.
 
